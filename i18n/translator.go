@@ -20,18 +20,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/fs"
-	"net/http"
 	"path/filepath"
 	"strings"
 
+	"github.com/JackGod001/simple-admin-common/utils/parse"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
-	"github.com/zeromicro/go-zero/core/errorx"
 	"github.com/zeromicro/go-zero/core/logx"
 	"golang.org/x/text/language"
-	"google.golang.org/grpc/status"
-
-	"github.com/JackGod001/simple-admin-common/utils/errcode"
-	"github.com/JackGod001/simple-admin-common/utils/parse"
 )
 
 //go:embed locale/*.json
@@ -80,31 +75,32 @@ func (l *Translator) Trans(ctx context.Context, msgId string) string {
 	return message
 }
 
-// TransError translates the error message
-func (l *Translator) TransError(ctx context.Context, err error) error {
-	lang := ctx.Value("lang").(string)
-	if errcode.IsGrpcError(err) {
-		message, e := l.MatchLocalizer(lang).LocalizeMessage(&i18n.Message{ID: strings.Split(err.Error(), "desc = ")[1]})
-		if e != nil || message == "" {
-			message = err.Error()
-		}
-		return status.Error(status.Code(err), message)
-	} else if codeErr, ok := err.(*errorx.CodeError); ok {
-		message, e := l.MatchLocalizer(lang).LocalizeMessage(&i18n.Message{ID: codeErr.Error()})
-		if e != nil || message == "" {
-			message = codeErr.Error()
-		}
-		return errorx.NewCodeError(codeErr.Code, message)
-	} else if apiErr, ok := err.(*errorx.ApiError); ok {
-		message, e := l.MatchLocalizer(lang).LocalizeMessage(&i18n.Message{ID: apiErr.Error()})
-		if e != nil {
-			message = apiErr.Error()
-		}
-		return errorx.NewApiError(apiErr.Code, message)
-	} else {
-		return errorx.NewApiError(http.StatusInternalServerError, err.Error())
-	}
-}
+//
+//// TransError translates the error message
+//func (l *Translator) TransError(ctx context.Context, err error) error {
+//	lang := ctx.Value("lang").(string)
+//	if errcode.IsGrpcError(err) {
+//		message, e := l.MatchLocalizer(lang).LocalizeMessage(&i18n.Message{ID: strings.Split(err.Error(), "desc = ")[1]})
+//		if e != nil || message == "" {
+//			message = err.Error()
+//		}
+//		return status.Error(status.Code(err), message)
+//	} else if codeErr, ok := err.(*errorx.CodeError); ok {
+//		message, e := l.MatchLocalizer(lang).LocalizeMessage(&i18n.Message{ID: codeErr.Error()})
+//		if e != nil || message == "" {
+//			message = codeErr.Error()
+//		}
+//		return errorx.NewCodeError(codeErr.Code, message)
+//	} else if apiErr, ok := err.(*errorx.ApiError); ok {
+//		message, e := l.MatchLocalizer(lang).LocalizeMessage(&i18n.Message{ID: apiErr.Error()})
+//		if e != nil {
+//			message = apiErr.Error()
+//		}
+//		return errorx.NewApiError(apiErr.Code, message)
+//	} else {
+//		return errorx.NewApiError(http.StatusInternalServerError, err.Error())
+//	}
+//}
 
 // MatchLocalizer used to matcher the localizer in map
 func (l *Translator) MatchLocalizer(lang string) *i18n.Localizer {
