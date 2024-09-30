@@ -2,8 +2,6 @@ module github.com/JackGod001/simple-admin-common
 
 go 1.23.0
 
-replace github.com/zeromicro/go-zero v1.7.2 => github.com/suyuan32/simple-admin-tools v1.7.2
-
 require (
 	entgo.io/ent v0.14.1
 	github.com/apache/rocketmq-client-go/v2 v2.1.2
@@ -96,6 +94,7 @@ require (
 	github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78 // indirect
 	github.com/zclconf/go-cty v1.15.0 // indirect
 	go.opentelemetry.io/otel v1.29.0 // indirect
+	go.opentelemetry.io/otel/exporters/jaeger v1.17.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.29.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.29.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.29.0 // indirect

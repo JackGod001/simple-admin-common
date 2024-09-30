@@ -16,7 +16,7 @@ package asynq
 
 import (
 	"fmt"
-	"github.com/suyuan32/simple-admin-common/config"
+	"github.com/JackGod001/simple-admin-common/config"
 	"time"
 
 	"github.com/hibiken/asynq"
